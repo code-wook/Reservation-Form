@@ -1,0 +1,31 @@
+/* Hide native date/time picker icons */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+/* Shared icon styles */
+.icon-calendar,
+.icon-clock {
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+}
+
+/* Maroon calendar with white squares */
+.icon-calendar {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Crect x='2' y='3' width='20' height='19' rx='2' fill='%23991b1b'/%3E%3Crect x='2' y='7' width='20' height='2' fill='%23ffffff'/%3E%3Crect x='6' y='11' width='3' height='3' fill='%23ffffff'/%3E%3Crect x='11' y='11' width='3' height='3' fill='%23ffffff'/%3E%3Crect x='16' y='11' width='3' height='3' fill='%23ffffff'/%3E%3Crect x='6' y='16' width='3' height='3' fill='%23ffffff'/%3E%3Crect x='11' y='16' width='3' height='3' fill='%23ffffff'/%3E%3Crect x='16' y='16' width='3' height='3' fill='%23ffffff'/%3E%3C/svg%3E");
+}
+
+/* Maroon clock with white hands */
+.icon-clock {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%23991b1b'/%3E%3Cline x1='12' y1='6' x2='12' y2='12' stroke='%23ffffff' stroke-width='2'/%3E%3Cline x1='12' y1='12' x2='16' y2='14' stroke='%23ffffff' stroke-width='2'/%3E%3C/svg%3E");
+}
+
+/* Warning messages */
+.warning {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
