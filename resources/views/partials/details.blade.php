@@ -83,10 +83,11 @@
                 </div>
 
                 <div class="px-3 sm:px-6 pb-10">
-                    <button type="equipmentbutton"
-                        class="add-equipment-btn mt-2 text-sm font-semibold text-red-800 border border-red-800 px-4 py-2 rounded bg-red-800 text-white">
-                        Add More Equipment
-                    </button>
+                    <button type="button"
+                            class="add-equipment-btn mt-2 text-sm font-semibold text-red-800 border border-red-800 px-4 py-2 rounded bg-red-800 text-white">
+                            Add More Equipment
+                            </button>
+
                 </div>
             </div>
 
