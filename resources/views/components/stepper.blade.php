@@ -15,7 +15,7 @@
       <button type="button" class="stepper-step flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-xs sm:text-sm md:text-lg rounded-full border-2 border-[#991B1B] bg-red-800 text-white font-bold transition-all duration-300" data-step="0">
         1
       </button>
-      <span class="mt-1 text-[9px] sm:text-[10px] md:text-xs text-center text-red-700">Reservation Date & Time</span>
+      <span class="mt-1 text-[9px] sm:text-[10px] md:text-xs text-center text-red-800">Reservation Date & Time</span>
     </div>
 
     <!-- Step 2 -->

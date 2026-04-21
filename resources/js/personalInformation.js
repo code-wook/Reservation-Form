@@ -19,9 +19,9 @@ function toggleSection($content, $arrow) {
     $content.toggleClass('hidden');
 
     if ($content.hasClass('hidden')) {
-        $arrow.text('v'); // collapsed
+        $arrow.text('>'); // collapsed
     } else {
-        $arrow.text('>'); // expanded
+        $arrow.text('v'); // expanded
     }
 }
 
@@ -29,7 +29,7 @@ function toggleSection($content, $arrow) {
 function openSection($content, $arrow) {
     if ($content.hasClass('hidden')) {
         $content.removeClass('hidden');
-        $arrow.text('>'); // expanded
+        $arrow.text('v'); // expanded
     }
 }
 

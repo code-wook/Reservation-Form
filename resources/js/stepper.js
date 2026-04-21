@@ -395,42 +395,44 @@ if (otherEquipAccordion) {
     // -------------------------
     // SHOW TOASTS
     // -------------------------
-    if (errors.length > 0) {
-        errors.forEach(msg => showToast(msg));
-        valid = false;
-    }
+if (errors.length > 0) {
+    showToast(errors[0]); // show ONLY first error
+    valid = false;
+}
 
     return valid;
 }
 
 
-    // =========================
-    // NEXT BUTTON
-    // =========================
 // =========================
 // NEXT BUTTON
 // =========================
 let isSubmitting = false;
+let isStepLocked = false;
 
 nextBtns.forEach(btn => {
     btn.addEventListener("click", () => {
 
-        if (!validateStep(currentStep)) return;
+        // prevent spam click immediately
+        if (isStepLocked) return;
 
-        // LAST STEP → submit form
+        if (document.activeElement?.tagName === "INPUT") {
+            document.activeElement.blur();
+        }
+
+        // run validation ONLY ONCE
+        const isValid = validateStep(currentStep);
+        if (!isValid) return;
+
+        // LOCK immediately after validation passes
+        isStepLocked = true;
+        nextBtns.forEach(b => b.disabled = true);
+
+        // LAST STEP → submit
         if (currentStep === steps.length - 1) {
 
-            // Prevent multiple clicks
-            if (isSubmitting) return;
-            isSubmitting = true;
-
-            // Disable all next buttons
-            nextBtns.forEach(b => b.disabled = true);
-
-            // Show success toast first
             showToast("Submitting reservation, please wait...", "success");
 
-            // Wait 3 seconds (toast duration) before submitting
             setTimeout(() => {
                 formChanged = false;
                 document.getElementById("reservationForm").submit();
@@ -439,7 +441,7 @@ nextBtns.forEach(btn => {
             return;
         }
 
-        // NORMAL STEP CHANGE
+        // STEP CHANGE
         const nextStep = currentStep + 1;
         animatePaneChange(nextStep);
         currentStep = nextStep;
@@ -447,12 +449,14 @@ nextBtns.forEach(btn => {
         updateStepper();
 
         window.scrollTo({ top: 0, behavior: "smooth" });
+
+        // UNLOCK after 4 seconds (your requirement)
+        setTimeout(() => {
+            isStepLocked = false;
+            nextBtns.forEach(b => b.disabled = false);
+        }, 4000);
     });
 });
-
-
- 
-
 
     // =========================
     // BACK BUTTON
@@ -516,7 +520,7 @@ window.addEventListener("beforeunload", (e) => {
     e.preventDefault(); // Some browsers require this
     e.returnValue = confirmationMessage; // Standard for most browsers
     return confirmationMessage; // For older browsers
-});
+}); 
 
 // Optional: reset flag when form is submitted successfully
 reservationForm.addEventListener("submit", () => {

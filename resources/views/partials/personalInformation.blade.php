@@ -120,12 +120,11 @@
 
   <hr class="border-0 border-t border-red-800">
 
-  <div class="px-8 py-6 space-y-4">
+  <div id="certifyContent" class="px-8 py-6 space-y-4">
     <p class="text-sm text-gray-800">
       I hereby certify that:
     </p>
 
-    <div id="certifyContent">
       <!-- ================= I HEREBY CERTIFY ================= -->
       <x-consent-container id="certify" title="I hereby certify">
         <span class="text-red-600">*</span>
