@@ -28,6 +28,11 @@
     @include('partials.personalInformation')
 </div>
 
+<div class="stepper-pane hidden" data-step="3">
+
+    @include('partials.Agreement')
+</div>
+
          <!-- Navigation buttons fixed for all steps -->
     <x-form-navigation 
         :backUrl="url('/')"
