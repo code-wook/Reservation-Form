@@ -12,9 +12,10 @@
     <!-- Success text -->
     <h1 class="text-2xl sm:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">Success!</h1>
     <p class="text-gray-700 text-base sm:text-lg max-w-xs sm:max-w-md mb-3 sm:mb-4">
-        Thank you! Your reservation has been confirmed.
+        Your request has been submitted.
     </p>
 
 
 </div>
 @endsection
+
