@@ -67,17 +67,27 @@ window.toggleRecurring = toggleRecurring;
    ADVANCE WARNING LOGIC
 ===================================================== */
 if ($startDateInput.length && $endDateInput.length) {
-    const today = new Date();
-    today.setHours(0,0,0,0);
 
-    // Minimum reservation date = 4 days from today
-    const minReservationDate = new Date(today);
-    minReservationDate.setDate(minReservationDate.getDate() + 4);
-    const minISO = minReservationDate.toISOString().split('T')[0];
+    function applyBaseRestrictions() {
+    $startDateInput.attr('min', minISO).removeAttr('max');
+    $endDateInput.attr('min', minISO).removeAttr('max');
+}
+   const today = new Date();
+today.setHours(0, 0, 0, 0);
 
-    $startDateInput.attr('min', minISO);
-    $endDateInput.attr('min', minISO);
+// Minimum allowed reservation date = today + 4 days
+const minDate = new Date(today);
+minDate.setDate(minDate.getDate() + 4);
+const minISO = minDate.toISOString().split('T')[0];
 
+// Apply initial restriction
+$startDateInput.attr('min', minISO);
+$endDateInput.attr('min', minISO);
+
+// helper
+function toISO(date) {
+    return date.toISOString().split('T')[0];
+}
     function addDays(dateString, days) {
         const d = new Date(dateString);
         d.setDate(d.getDate() + days);
@@ -95,93 +105,112 @@ if ($startDateInput.length && $endDateInput.length) {
         $endDateInput.attr('min', minISO).removeAttr('max');
     }
 
-    function showTimeSection() {
-    $timeSection.removeClass('max-h-0 opacity-0');
-    $timeSection.addClass('max-h-[500px] opacity-100');
+const $timeWrapper = $('#timeSectionWrapper');
+
+function showTimeSection() {
+    $timeWrapper.removeClass('hidden'); //  SHOW WHOLE BOX
+
+    $timeSection
+        .removeClass('max-h-0 opacity-0')
+        .addClass('max-h-[500px] opacity-100');
 }
 
 function hideTimeSection() {
-    $timeSection.removeClass('max-h-[500px] opacity-100');
-    $timeSection.addClass('max-h-0 opacity-0');
+    $timeSection
+        .removeClass('max-h-[500px] opacity-100')
+        .addClass('max-h-0 opacity-0');
+
+    // wait for animation before hiding wrapper
+    setTimeout(() => {
+        $timeWrapper.addClass('hidden');
+    }, 400);
 }
 
 
-    function checkTimeSection() {
-        const startVal = $startDateInput.val();
-        const endVal = $endDateInput.val();
+ function syncTimeSection() {
+    const startVal = $startDateInput.val();
+    const endVal = $endDateInput.val();
 
-        if (!startVal || !endVal) {
-           hideTimeSection();
-            return;
-        }
-
-        const start = new Date(startVal);
-        const end = new Date(endVal);
-        const diffStart = (start - today) / (1000*60*60*24);
-        const diffEnd = (end - today) / (1000*60*60*24);
-
-        if (diffStart > 3 && diffEnd > 3) {
-         showTimeSection();
-        } else {
-          hideTimeSection();
-        }
+    // BOTH EMPTY → full reset
+    if (!startVal && !endVal) {
+        hideTimeSection();
+        applyBaseRestrictions();
+        return;
     }
+
+    // ONLY ONE EMPTY → DO NOTHING to range rules
+    if (!startVal || !endVal) {
+        hideTimeSection();
+        return;
+    }
+
+    // BOTH PRESENT → validate
+    const start = new Date(startVal);
+    const end = new Date(endVal);
+
+    const diffStart = (start - today) / (1000 * 60 * 60 * 24);
+    const diffEnd = (end - today) / (1000 * 60 * 60 * 24);
+
+    if (diffStart > 3 && diffEnd > 3) {
+        showTimeSection();
+    } else {
+        hideTimeSection();
+    }
+}
 
     /* =========================
        START DATE CHANGED
     ========================= */
-    $startDateInput.on('change', function() {
-        const startVal = $(this).val();
-        if (!startVal) { resetRestrictions(); return; }
+$startDateInput.on('change', function () {
+    const startVal = $(this).val();
 
-        const start = new Date(startVal);
-        const maxEnd = new Date(start);
-        maxEnd.setDate(maxEnd.getDate() + 2);
-        const maxEndISO = maxEnd.toISOString().split('T')[0];
+ 
 
-        $endDateInput.attr('min', startVal);
-        $endDateInput.attr('max', maxEndISO);
+    const start = new Date(startVal);
 
-        if ($endDateInput.val() && 
-            ($endDateInput.val() < $endDateInput.attr('min') ||
-             $endDateInput.val() > $endDateInput.attr('max'))) {
-            $endDateInput.val('');
-        }
+    const maxEnd = new Date(start);
+    maxEnd.setDate(maxEnd.getDate() + 2);
 
-        checkTimeSection();
-    });
+    const maxEndISO = toISO(maxEnd);
 
+    // ONLY update end constraints
+    $endDateInput.attr('min', startVal);
+    $endDateInput.attr('max', maxEndISO);
+
+    const endVal = $endDateInput.val();
+
+
+    syncTimeSection();
+});
     /* =========================
        END DATE CHANGED
     ========================= */
-    $endDateInput.on('change', function() {
-        const endVal = $(this).val();
-        if (!endVal) { resetRestrictions(); return; }
+$endDateInput.on('change', function () {
+    const endVal = $(this).val();
 
-        const end = new Date(endVal);
-        const minStart = new Date(end);
-        minStart.setDate(minStart.getDate() - 2);
-        const minStartISO = minStart.toISOString().split('T')[0];
 
-        $startDateInput.attr('min', (minStartISO < minISO ? minISO : minStartISO));
-        $startDateInput.attr('max', endVal);
+    const end = new Date(endVal);
 
-        if ($startDateInput.val() && 
-            ($startDateInput.val() < $startDateInput.attr('min') ||
-             $startDateInput.val() > $startDateInput.attr('max'))) {
-            $startDateInput.val('');
-        }
+    const minStart = new Date(end);
+    minStart.setDate(minStart.getDate() - 2);
 
-        checkTimeSection();
-    });
+    let minStartISO = toISO(minStart);
+
+    if (minStartISO < minISO) {
+        minStartISO = minISO;
+    }
+
+    $startDateInput.attr('min', minStartISO);
+    $startDateInput.attr('max', endVal);
+
+    const startVal = $startDateInput.val();
+
+
+
+    syncTimeSection();
+});
 }
 
-/* =====================================================
-   FORM VALIDATION
-===================================================== */
-/* =========================
-   INTERCEPT FORM SUBMIT FOR TOAST WARNINGS
-========================= */
 
 
 /* =====================================================
