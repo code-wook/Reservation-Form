@@ -12,6 +12,7 @@ const $certifyToggle = $('#certifyToggle');
 const $certifyContent = $('#certifyContent');
 const $certifyArrow = $('#certifyArrow');
 
+
 // =========================
 // Toggle Section
 // =========================
@@ -48,3 +49,8 @@ $form.find('[required]').each(function() {
         if ($certifyContent.has(this).length) openSection($certifyContent, $certifyArrow);
     });
 });
+
+
+
+
+
