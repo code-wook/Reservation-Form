@@ -2,7 +2,54 @@ import { showToast } from "./toast";
 
   document.addEventListener("DOMContentLoaded", () => {
 
+    const facilitySelect = document.getElementById('facilitySelect');
 
+let facilitiesData = []; // store API response
+
+fetch('http://127.0.0.1:8001/api/facilities') // change port if needed
+  .then(res => res.json())
+  .then(data => {
+    facilitiesData = data;
+
+    facilitySelect.innerHTML = '<option value="">Select a facility</option>';
+
+    data.forEach(facility => {
+      const option = document.createElement('option');
+      option.value = facility.id;
+      option.textContent = facility.name;
+      facilitySelect.appendChild(option);
+    });
+  })
+  .catch(err => {
+    console.error('Error fetching facilities:', err);
+    facilitySelect.innerHTML = '<option>Error loading</option>';
+  });
+
+  facilitySelect.addEventListener('change', function () {
+
+  const selectedId = this.value;
+
+  const facility = facilitiesData.find(f => f.id == selectedId);
+
+  const equipmentSelects = document.querySelectorAll('.equipment-select');
+
+  equipmentSelects.forEach(select => {
+
+    select.innerHTML = '<option value="">Select equipment</option>';
+
+    if (!facility) return;
+
+    facility.equipment.forEach(eq => {
+      const option = document.createElement('option');
+      option.value = eq.name;
+      option.textContent = eq.name;
+      select.appendChild(option);
+    });
+
+  });
+
+});
+    
   // -----------------------------
   // OTHER EQUIPMENT ACCORDION
   // -----------------------------
@@ -96,10 +143,35 @@ function updateEquipmentOptions() {
 templateRow.querySelectorAll('input').forEach(i => i.value = '');
 
 // Reset select to empty
-const select = templateRow.querySelector('select');
+const selectedFacilityId = facilitySelect.value;
+const facility = facilitiesData.find(f => f.id == selectedFacilityId);
+
+if (facility) {
+  select.innerHTML = '<option value="">Select equipment</option>';
+
+  facility.equipment.forEach(eq => {
+    const option = document.createElement('option');
+    option.value = eq.name;
+    option.textContent = eq.name;
+    select.appendChild(option);
+  });
+}
+
 select.value = '';
 
-    // Show delete button
+if (facility) {
+  select.innerHTML = '<option value="">Select equipment</option>';
+
+  facility.equipment.forEach(eq => {
+    const option = document.createElement('option');
+    option.value = eq.name;
+    option.textContent = eq.name;
+    select.appendChild(option);
+  });
+}
+select.value = '';
+
+      // Show delete button
     const deleteBtn = templateRow.querySelector('.delete-equipment');
     deleteBtn.classList.remove('hidden');
     deleteBtn.addEventListener('click', () => {
@@ -154,18 +226,14 @@ equipmentContainer.addEventListener('change', (e) => {
   });
 
   if (hasIncomplete) {
-    showToast("Please complete the current equipment row before adding another.");
-    return;
+    showToast("Please complete the current equipment row first");
+    return; // ❌ STOP adding new row
   }
 
-  
-
-  createRow();
-
+  createRow(); // ✅ only runs if valid
 });
 
-
-
+});
   // Enable delete for default row
   const defaultDeleteBtn = equipmentContainer.querySelector('.delete-equipment');
   if (defaultDeleteBtn) {
@@ -177,4 +245,4 @@ equipmentContainer.addEventListener('change', (e) => {
     });
   }
 
-});
+
