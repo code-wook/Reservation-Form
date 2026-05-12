@@ -121,11 +121,16 @@
         </div>
     </div>
 
+    </x-section-box>
+
     <!-- TIME SECTION -->
-    <div
-        id="timeSection"
-        class="mt-3 border border-red-800 rounded-lg bg-gray-50 overflow-hidden transition-all duration-500 max-h-0 opacity-0"
-    >
+
+
+<x-section-box id="timeSectionWrapper" class="hidden">
+
+
+        <div id="timeSection" class= "border border-red-800 rounded-lg bg-gray-50 overflow-hidden transition-all duration-500 max-h-0 opacity-0">
+
 
         <!-- Time Accordion Button -->
         <button
@@ -184,5 +189,7 @@
         </div>
 
     </div>
+
+  
 
 </x-section-box>
