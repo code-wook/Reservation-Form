@@ -1,7 +1,7 @@
 
 
 
-<div class="equipment-row border border-gray-200 rounded-md p-4 relative">
+<div class="equipment-row py-3 relative">
     <!-- DELETE BUTTON -->
     <button type="button"
         class="delete-equipment hidden absolute top-2 right-2 text-xs text-red-700 border border-red-700 px-2 py-1 rounded">
@@ -30,7 +30,7 @@
                 class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-700"
                 oninput="this.value = this.value.replace(/\D/g,'').slice(0,3); if(this.value === '0') this.value = '';">
             <span class="text-xs text-gray-500">
-                Enter the quantity needed from (1-999) only
+                        Enter quantity (must not exceed available stock)
             </span>
         </div>
     </div>
