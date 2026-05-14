@@ -295,6 +295,23 @@ $('.equipment-row').each(function () {
     const equip = $(this).find('select').val();
     const qty = $(this).find('input[type="number"]').val();
 
+    const selectedOption = $(this).find('select option:selected');
+
+const availableQty = parseInt(
+    selectedOption.data('availableqty') || 0
+);
+
+if (parseInt(qty) > availableQty) {
+
+    hasRow = true;
+
+    return {
+        valid: false,
+        field: '.equipment-row',
+        message: `Only ${availableQty} available for ${equip}`
+    };
+}
+
     if (!equip || !qty) {
         hasRow = true;
 
