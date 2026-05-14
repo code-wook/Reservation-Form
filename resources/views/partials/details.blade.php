@@ -78,6 +78,57 @@
                     Equipment Usage
                 </h3>
 
+<!-- EQUIPMENT SEARCH -->
+<div class="px-3 sm:px-6 pb-4">
+
+   <div class="flex gap-2 items-center mt-4 relative">
+
+    <input
+        id="equipmentSearchInput"
+        type="text"
+        placeholder="Search equipment..."
+        class="w-full border rounded-md px-3 mb-5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-700"
+    />
+
+    <button
+        type="button"
+        id="equipmentSearchBtn"
+        class="bg-red-800 text-white px-4 mb-5 py-2 rounded text-sm hover:bg-red-900 whitespace-nowrap"
+    >
+        Search
+    </button>
+
+</div>
+
+</div>
+
+   
+
+
+
+<!-- RESULTS -->
+<div id="equipmentSearchResults" class="hidden px-3 sm:px-6 pb-6">
+
+    <h4 class="font-semibold text-sm mb-2">
+        Search Results
+    </h4>
+
+    <table class="w-full border text-sm">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="border px-2 py-1">Facility ID</th>
+                <th class="border px-2 py-1">Facility Name</th>
+                <th class="border px-2 py-1">Quantity</th>
+            </tr>
+        </thead>
+
+        <tbody id="equipmentSearchTableBody"></tbody>
+    </table>
+
+</div>
+
+
+
                 <div id="equipmentRows" class="space-y-4 px-3 sm:px-6 pb-6 sm:pb-4">
                     <x-equipment-row :index="1" />
                 </div>
@@ -90,8 +141,6 @@
 
                 </div>
             </div>
-
-        </div>
 
         <hr class="border-0 border-t border-red-800">
 
@@ -142,4 +191,6 @@
         </div>
 
     </div>
+
+</div>
 </x-section-box>
