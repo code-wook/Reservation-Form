@@ -1,5 +1,5 @@
 import { showToast } from "./toast";
-
+import { initEquipmentSearch } from "./equipmentSearch";
   document.addEventListener("DOMContentLoaded", () => {
 
     const facilitySelect = document.getElementById('facilitySelect');
@@ -40,11 +40,16 @@ fetch('http://127.0.0.1:8001/api/facilities') // change port if needed
     if (!facility) return;
 
     facility.equipment.forEach(eq => {
-      const option = document.createElement('option');
-      option.value = eq.name;
-      option.textContent = eq.name;
-      select.appendChild(option);
-    });
+    const option = document.createElement('option');
+
+    option.value = eq.name;
+    option.textContent = eq.name;
+
+    // STORE AVAILABLE QUANTITY
+    option.dataset.availableQty = eq.quantity;
+
+  select.appendChild(option);
+});
 
   });
 
@@ -55,6 +60,25 @@ fetch('http://127.0.0.1:8001/api/facilities') // change port if needed
   // -----------------------------
   const needEquipmentRadios = document.querySelectorAll('input[name="needEquipment"]');
   const otherEquipAccordion = document.getElementById('otherEquipmentAccordion');
+  function updateAccordionHeight() {
+
+  // only update if accordion is open
+  if (
+    document.querySelector('input[name="needEquipment"]:checked')?.value !== 'yes'
+  ) return;
+
+  // reset height first
+  otherEquipAccordion.style.maxHeight = 'none';
+
+  // calculate new height
+  const newHeight = otherEquipAccordion.scrollHeight;
+
+  // apply new height
+  otherEquipAccordion.style.maxHeight = newHeight + 'px';
+}
+
+// make globally accessible
+window.updateAccordionHeight = updateAccordionHeight;
 
   // Initialize collapsed state
   otherEquipAccordion.style.overflow = 'hidden';
@@ -143,18 +167,25 @@ function updateEquipmentOptions() {
 templateRow.querySelectorAll('input').forEach(i => i.value = '');
 
 // Reset select to empty
+const select = templateRow.querySelector('select');
+
 const selectedFacilityId = facilitySelect.value;
 const facility = facilitiesData.find(f => f.id == selectedFacilityId);
 
-if (facility) {
-  select.innerHTML = '<option value="">Select equipment</option>';
+select.innerHTML = '<option value="">Select equipment</option>';
 
+if (facility) {
   facility.equipment.forEach(eq => {
-    const option = document.createElement('option');
-    option.value = eq.name;
-    option.textContent = eq.name;
-    select.appendChild(option);
-  });
+  const option = document.createElement('option');
+
+  option.value = eq.name;
+  option.textContent = eq.name;
+
+  // STORE AVAILABLE QUANTITY
+  option.dataset.availableQty = eq.quantity;
+
+  select.appendChild(option);
+});
 }
 
 select.value = '';
@@ -163,11 +194,16 @@ if (facility) {
   select.innerHTML = '<option value="">Select equipment</option>';
 
   facility.equipment.forEach(eq => {
-    const option = document.createElement('option');
-    option.value = eq.name;
-    option.textContent = eq.name;
-    select.appendChild(option);
-  });
+  const option = document.createElement('option');
+
+  option.value = eq.name;
+  option.textContent = eq.name;
+
+  // STORE AVAILABLE QUANTITY
+  option.dataset.availableQty = eq.quantity;
+
+  select.appendChild(option);
+});
 }
 select.value = '';
 
@@ -203,9 +239,66 @@ if (document.querySelector('input[name="needEquipment"]:checked')?.value === 'ye
 
   // Update options whenever a select changes
 equipmentContainer.addEventListener('change', (e) => {
+
+  // EQUIPMENT SELECT CHANGED
   if (e.target.tagName.toLowerCase() === 'select') {
     updateEquipmentOptions();
   }
+
+  // QUANTITY INPUT CHANGED
+  if (e.target.type === 'number') {
+
+  const row = e.target.closest('.equipment-row');
+
+  const facilitySelected = facilitySelect.value;
+
+  const select = row.querySelector('select');
+  const selectedOption = select.options[select.selectedIndex];
+
+  // remove old message
+  let existingMsg = row.querySelector('.qty-error');
+  if (existingMsg) existingMsg.remove();
+
+  const enteredQty = parseInt(e.target.value || 0);
+
+  // 1. NO FACILITY YET
+  if (!facilitySelected) {
+    e.target.value = '';
+
+    const error = document.createElement('span');
+    error.className = 'qty-error text-xs text-red-700 block mt-1';
+    error.textContent = 'Please choose a facility first';
+
+    e.target.parentElement.appendChild(error);
+    return;
+  }
+
+  // 2. NO EQUIPMENT YET
+  if (!select.value) {
+    e.target.value = '';
+
+    const error = document.createElement('span');
+    error.className = 'qty-error text-xs text-red-700 block mt-1';
+    error.textContent = 'Please choose an equipment first';
+
+    e.target.parentElement.appendChild(error);
+    return;
+  }
+
+  const availableQty = parseInt(selectedOption.dataset.availableQty || 0);
+
+  // 3. STOCK VALIDATION
+  if (enteredQty > availableQty) {
+
+    e.target.value = '';
+
+    const error = document.createElement('span');
+    error.className = 'qty-error text-xs text-red-700 block mt-1';
+    error.textContent = `Only ${availableQty} available for this equipment`;
+
+    e.target.parentElement.appendChild(error);
+  }
+}
 });
 
 
@@ -227,13 +320,15 @@ equipmentContainer.addEventListener('change', (e) => {
 
   if (hasIncomplete) {
     showToast("Please complete the current equipment row first");
-    return; // ❌ STOP adding new row
+    return; //  STOP adding new row
   }
 
-  createRow(); // ✅ only runs if valid
+  createRow(); //  only runs if valid
 });
 
-});
+  //  INIT SEARCH COMPONENT (CORRECT PLACE)
+  initEquipmentSearch();
+
   // Enable delete for default row
   const defaultDeleteBtn = equipmentContainer.querySelector('.delete-equipment');
   if (defaultDeleteBtn) {
@@ -244,5 +339,7 @@ equipmentContainer.addEventListener('change', (e) => {
       }
     });
   }
+
+  });
 
 
