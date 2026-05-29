@@ -9,18 +9,29 @@
 }
 
 .toast {
-    min-width: 250px;
+    min-width: 260px;
+    max-width: 360px;
+
     color: white;
-    padding: 12px 16px;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    padding: 14px 18px;
+
+    border-radius: 999px; /* 💡 full pill shape */
+    
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
 
     opacity: 0;
     visibility: hidden;
-    transform: translateX(100%);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateX(120%);
+    transition: all 0.4s ease;
 
-    background-color: #e74c3c; /* default red for errors */
+    background-color: #e74c3c;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 14px;
+    line-height: 1.2;
 }
 
 /* Success/Completion Toast */
@@ -31,5 +42,5 @@
 .toast.show {
     opacity: 1;
     visibility: visible;
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
 }

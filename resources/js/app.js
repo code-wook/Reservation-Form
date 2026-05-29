@@ -15,7 +15,7 @@ import './Validation';  // all validation logic per step
 import './reservation';         // step 0 → date, time, toggles, accordions
 import './details';             // step 1 → facility, equipment, dynamic fields
 import './personalInformation'; // step 2 → user info + accordions
-
+                                // step 3 → Agreements or Consents are inside Validation.js
 
 /* =========================
    UI / FEEDBACK

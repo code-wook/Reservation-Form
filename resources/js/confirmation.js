@@ -5,3 +5,5 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('checkmark').style.transform = 'scale(1)';
     }, 200);
 });
+
+// Checkmark Animation only // 

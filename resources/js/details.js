@@ -4,7 +4,15 @@ import { initEquipmentSearch } from "./equipmentSearch";
 
     const facilitySelect = document.getElementById('facilitySelect');
 
+const needSearchRadios =
+  document.querySelectorAll('input[name="needSearchEquipment"]');
+
+const searchEquipmentWrapper =
+  document.getElementById('searchEquipmentWrapper');
+
 let facilitiesData = []; // store API response
+
+
 
 fetch('http://127.0.0.1:8001/api/facilities') // change port if needed
   .then(res => res.json())
@@ -100,6 +108,27 @@ window.updateAccordionHeight = updateAccordionHeight;
       }
     });
   });
+
+  // -----------------------------
+// SEARCH EQUIPMENT TOGGLE
+// -----------------------------
+needSearchRadios.forEach(radio => {
+
+  radio.addEventListener('change', () => {
+
+    if (radio.value === "yes" && radio.checked) {
+
+      searchEquipmentWrapper.classList.remove('hidden');
+
+    } else {
+
+      searchEquipmentWrapper.classList.add('hidden');
+
+    }
+
+  });
+
+});
 
   // ---------- PERSONAL EQUIPMENT ----------
   const personalRadios = document.querySelectorAll('input[name="personalEquipment"]');

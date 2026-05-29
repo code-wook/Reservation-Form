@@ -1,4 +1,4 @@
-<x-logo />
+<x-UpLogo /> 
 
 <!-- ========================= -->
 <!-- TRANSACTION INFO -->
@@ -109,14 +109,13 @@
                 </div>
 
             </div>
-
-            <!-- Calendar Link -->
-            <a
-                href="https://docs.google.com/spreadsheets/d/1n-I--vksJnmhFeP11Q7TdubT-m2nPZAU/edit?usp=sharing"
-                class="font-sans text-red-800 underline text-xs sm:text-sm md:self-end break-words"
-            >
-                UP Cebu Facilities and Other Equipment Calendar. Click CMO Forms then select Facilities Calendar.
-            </a>
+            <a href="https://docs.google.com/spreadsheets/d/1n-I--vksJnmhFeP11Q7TdubT-m2nPZAU/edit?usp=sharing"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="font-sans text-red-800 underline text-xs sm:text-sm md:self-end break-words"
+             >
+    UP Cebu Facilities and Other Equipment Calendar. Click CMO Forms then select Facilities Calendar.
+</a>
 
         </div>
     </div>
@@ -124,7 +123,6 @@
     </x-section-box>
 
     <!-- TIME SECTION -->
-
 
 <x-section-box id="timeSectionWrapper" class="hidden">
 

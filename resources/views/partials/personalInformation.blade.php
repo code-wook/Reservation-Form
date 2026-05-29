@@ -60,7 +60,7 @@
       <!-- Contact Number and Email -->
 <div class="w-full">
 
-<label class="block font-bold text-gray-800 text-lg mb-1">
+<label class="block font-bold text-red-800 text-lg mb-1">
   Contact Details <span class="text-red-600">*</span>
 </label>
  

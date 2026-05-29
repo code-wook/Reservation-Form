@@ -6,6 +6,9 @@ use App\Http\Controllers\ReservationController;
 
  Route::get('/', [ReservationController::class, 'showViewPage'])->name('viewpage.form');
  Route::post('/viewpage', [ReservationController::class, 'submitReservation'])->name('viewpage.store');
+ Route::get('/rental-rates', function () {
+    return view('partials.RentalRates');
+})->name('rental-rates');
  Route::get('/confirmation', function () {
 
     // Prevent direct access

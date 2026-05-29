@@ -15,17 +15,17 @@
 
 
         <div class="stepper-pane" data-step="0">
-    @include('partials.reservation', ['referenceNumber' => $referenceNumber])
+    @include('partials.Reservation', ['referenceNumber' => $referenceNumber])
 </div>
 
 <div class="stepper-pane hidden" data-step="1">
 
-    @include('partials.details')
+    @include('partials.Details')
 </div>
 
 <div class="stepper-pane hidden" data-step="2">
 
-    @include('partials.personalInformation')
+    @include('partials.PersonalInformation')
 </div>
 
 <div class="stepper-pane hidden" data-step="3">
