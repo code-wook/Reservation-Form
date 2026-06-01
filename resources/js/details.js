@@ -6,6 +6,21 @@ import { initEquipmentSearch } from "./equipmentSearch";
 
 const needSearchRadios =
   document.querySelectorAll('input[name="needSearchEquipment"]');
+const needEquipmentRadios =
+  document.querySelectorAll('input[name="needEquipment"]');
+
+  function syncRadios(value) {
+
+  document.querySelectorAll('input[name="needSearchEquipment"]').forEach(r => {
+    if (r.value === value) r.checked = true;
+  });
+
+  document.querySelectorAll('input[name="needEquipment"]').forEach(r => {
+    if (r.value === value) r.checked = true;
+  });
+
+}
+  
 
 const searchEquipmentWrapper =
   document.getElementById('searchEquipmentWrapper');
@@ -62,11 +77,10 @@ fetch('http://127.0.0.1:8001/api/facilities') // change port if needed
   });
 
 });
-    
   // -----------------------------
   // OTHER EQUIPMENT ACCORDION
   // -----------------------------
-  const needEquipmentRadios = document.querySelectorAll('input[name="needEquipment"]');
+
   const otherEquipAccordion = document.getElementById('otherEquipmentAccordion');
   function updateAccordionHeight() {
 
@@ -94,8 +108,17 @@ window.updateAccordionHeight = updateAccordionHeight;
   otherEquipAccordion.style.maxHeight = '0';
   otherEquipAccordion.style.opacity = '0';
 
-  needEquipmentRadios.forEach(radio => {
-    radio.addEventListener('change', () => {
+  // ensure default state stays CLOSED
+const selected = document.querySelector('input[name="needEquipment"]:checked');
+if (!selected) {
+  otherEquipAccordion.style.maxHeight = '0';
+  otherEquipAccordion.style.opacity = '0';
+}
+
+ needEquipmentRadios.forEach(radio => {
+  radio.addEventListener('change', () => {
+
+    syncRadios(radio.value);
       if (radio.value === "yes" && radio.checked) {
         // expand accordion smoothly
         otherEquipAccordion.style.maxHeight = otherEquipAccordion.scrollHeight + "px";
@@ -113,9 +136,9 @@ window.updateAccordionHeight = updateAccordionHeight;
 // SEARCH EQUIPMENT TOGGLE
 // -----------------------------
 needSearchRadios.forEach(radio => {
-
   radio.addEventListener('change', () => {
 
+    syncRadios(radio.value);
     if (radio.value === "yes" && radio.checked) {
 
       searchEquipmentWrapper.classList.remove('hidden');

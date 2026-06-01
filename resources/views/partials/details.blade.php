@@ -12,11 +12,6 @@
             Reservation Details
         </span>
 
-        <span class="arrow flex-shrink-0 w-6 h-6 
-                     border border-red-800 rounded text-sm 
-                     flex items-center justify-center bg-red-800 text-white">
-            &gt;
-        </span>
     </button>
 
     <hr class="border-0 border-t border-red-800">
@@ -45,7 +40,7 @@
     </div>
 
     <!-- NEED EQUIPMENT -->
-    <div class="space-y-2">
+    <div class="space-y-2 justify-center">
 
         <label class="block text-sm font-semibold">
             Do you need Equipment?
@@ -53,21 +48,22 @@
 
         <div class="flex items-center gap-6 mt-2">
 
-            <label class="flex items-center gap-2 text-sm">
+            <label class="flex items-center gap-2 text-sm ">
                 <input
                     type="radio"
                     name="needSearchEquipment"
                     value="yes"
+                    class ="accent-red-800 focus:ring-red-700"
                 >
                 Yes
             </label>
 
-            <label class="flex items-center gap-2 text-sm">
+            <label class="flex items-center gap-2 pr-4 text-sm">
                 <input
                     type="radio"
                     name="needSearchEquipment"
                     value="no"
-                    checked
+                    class="accent-red-800 focus:ring-red-700"
                 >
                 No
             </label>

@@ -7,11 +7,7 @@
           Payment Method
       </span>
 
-      <span class="arrow flex-shrink-0 w-6 h-6 
-                   border border-red-800 rounded text-sm 
-                   flex items-center justify-center">
-          &gt;
-      </span>
+ 
   </button>
 
   <hr class="border-0 border-t border-red-800">
